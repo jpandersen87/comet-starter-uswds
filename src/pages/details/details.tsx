@@ -1,17 +1,18 @@
 import { Spinner } from '@metrostar/comet-extras';
 import { Card } from '@metrostar/comet-uswds';
+import { useOktaAuth } from '@okta/okta-react';
 import { mockData } from '@src/data/spacecraft';
 import { Spacecraft } from '@src/types/spacecraft';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import ErrorNotification from '../../components/error-notification/error-notification';
-import useAuth from '../../hooks/use-auth';
 // import axios from '@src/utils/axios';
 
 export const Details = (): React.ReactElement => {
   const { id } = useParams();
-  const { isSignedIn } = useAuth();
+  const { authState } = useOktaAuth();
+  const isSignedIn = !!authState?.idToken;
   const { isLoading, error, data } = useQuery<Spacecraft, { message: string }>({
     queryKey: ['details', id],
     queryFn: () =>

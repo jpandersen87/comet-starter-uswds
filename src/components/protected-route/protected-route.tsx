@@ -1,14 +1,14 @@
-import useAuth from '@src/hooks/use-auth';
+import { useOktaAuth } from '@okta/okta-react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 export const ProtectedRoute = (): React.ReactElement => {
-  const { isSignedIn, isLoading } = useAuth();
-  if (isLoading)
+  const { authState } = useOktaAuth();
+  if (!authState)
     return (
       <div className="grid-container">
         <div>Loading...</div>
       </div>
     );
 
-  return isSignedIn ? <Outlet /> : <Navigate to="/signin" />;
+  return authState.idToken ? <Outlet /> : <Navigate to="/signin" />;
 };

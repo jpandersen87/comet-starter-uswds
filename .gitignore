@@ -52,3 +52,7 @@ cypress/videos
 cypress/screenshots
 cypress/reports
 .unlighthouse
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

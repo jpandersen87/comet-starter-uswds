@@ -1,20 +1,31 @@
+import OktaAuth from '@okta/okta-auth-js';
+import { Security } from '@okta/okta-react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { AuthProvider } from 'react-oidc-context';
-import { BrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
-import { App } from './App.tsx';
+import { routes } from './router.tsx';
 import './styles.scss';
-import keycloak from './utils/keycloak.ts';
+
+const router = createBrowserRouter(routes);
+const oktaAuth = new OktaAuth({
+  issuer: 'https://{yourOktaDomain}/oauth2/default',
+  clientId: '{clientId}',
+  redirectUri: window.location.origin + '/login/callback',
+});
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const restoreOriginalUri = async (_oktaAuth: unknown, originalUri: unknown) => {
+  /*history.replace(
+    toRelativeUrl(originalUri || '/', window.location.origin),
+  );*/
+};
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter basename={process.env.APP_BASE_URL}>
-      <AuthProvider {...keycloak}>
-        <RecoilRoot>
-          <App />
-        </RecoilRoot>
-      </AuthProvider>
-    </BrowserRouter>
+    <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri}>
+      <RecoilRoot>
+        <RouterProvider router={router} />
+      </RecoilRoot>
+    </Security>
   </React.StrictMode>,
 );
