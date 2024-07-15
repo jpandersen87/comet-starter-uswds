@@ -11,19 +11,21 @@ The goal of this project is to provide a React with TypeScript starter applicati
 - Unit Testing: [Vitest](https://vitest.dev/) with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 - Code Analysis: [ES Lint](https://eslint.org/)
 - Code Formatting: [Prettier](https://prettier.io/)
-- End-to-End (E2E) Testing: [Cypress](https://www.cypress.io/) with [cypress-axe](https://www.npmjs.com/package/cypress-axe)
+- End-to-End (E2E) Testing: [Playwright](https://www.playwright.dev/) with [@axe-core/playwright](https://www.npmjs.com/package/@axe-core/playwright)
 - Accessibility Testing: [Unlighthouse](https://unlighthouse.dev/)
 - API support: [Axios](https://axios-http.com/) with [React Query](https://tanstack.com/query/v3/)
-- Authentication support: [Keycloak](https://www.keycloak.org/)
+- Authentication support: [Okta](https://www.okta.com/)
 
 ## Table of Contents
 
-1. [Running the Project Locally](#running-the-project-locally)
-2. [Running Unit Tests](#running-unit-tests)
-3. [Running Code Quality Checks](#running-code-quality-checks)
-4. [Running End-to-End (E2E) Tests](#running-end-to-end-e2e-tests)
-5. [Contributing](#contributing)
-6. [Next Steps](#next-steps)
+- [Welcome to the Comet Starter App!](#welcome-to-the-comet-starter-app)
+  - [Table of Contents](#table-of-contents)
+  - [Running the Project Locally](#running-the-project-locally)
+  - [Running Unit Tests](#running-unit-tests)
+  - [Running Code Quality Checks](#running-code-quality-checks)
+  - [Running End-to-End (E2E) Tests](#running-end-to-end-e2e-tests)
+  - [Contributing](#contributing)
+  - [Next Steps](#next-steps)
 
 ## Running the Project Locally
 
