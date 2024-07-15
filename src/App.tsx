@@ -4,12 +4,9 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Footer } from './components/footer/footer';
 import { Header } from './components/header/header';
+import config from './config';
 
-const oktaAuth = new OktaAuth({
-  issuer: 'https://{yourOktaDomain}/oauth2/default',
-  clientId: '{clientId}',
-  redirectUri: window.location.origin + '/login/callback',
-});
+const oktaAuth = new OktaAuth(config.oidc);
 
 const queryClient = new QueryClient();
 

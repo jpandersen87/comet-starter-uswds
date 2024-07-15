@@ -1,10 +1,13 @@
 {
   "include": ["../node_modules/playwright", "**/*.ts"],
   "compilerOptions": {
-    "noEmit": false,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noEmit": true,
     "sourceMap": false,
-    "target": "es5",
-    "lib": ["es5", "dom"],
+    "target": "ES2022",
+    "moduleResolution": "Bundler",
+    "module": "ES2022",
     "types": ["playwright", "node"]
   }
 }

@@ -1,5 +1,5 @@
+import * as oktaReact from '@okta/okta-react';
 import { act, render } from '@testing-library/react';
-import { AuthProvider } from 'react-oidc-context';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import * as useAuthMock from '../../hooks/use-auth/use-auth';
@@ -8,14 +8,17 @@ import { Home } from './home';
 
 describe('Home', () => {
   const componentWrapper = (
-    <AuthProvider>
-      <RecoilRoot>
-        <BrowserRouter>
-          <Home />
-        </BrowserRouter>
-      </RecoilRoot>
-    </AuthProvider>
+    <RecoilRoot>
+      <BrowserRouter>
+        <Home />
+      </BrowserRouter>
+    </RecoilRoot>
   );
+
+  vi.spyOn(oktaReact, 'useOktaAuth').mockReturnValue({
+    oktaAuth: {} as never,
+    authState: null,
+  });
 
   test('should render successfully', async () => {
     const { baseElement } = render(componentWrapper);

@@ -17,12 +17,13 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
+    "preview": "vite preview --port 8080",
+    "preview:build": "vite build && vite preview --port 8080",
     "format": "yarn prettier src --write",
     "test": "vitest --run",
     "test:coverage": "vitest --run --coverage",
     "test:ui": "vitest --ui",
-    "e2e": "yarn playwright",
+    "e2e": "yarn playwright test",
     "e2e:ci": "yarn run e2e:ci:run",
     "e2e:ci:run": "rm playwright/reports/* || true && yarn playwright",
     "e2e:ci:report": "mochawesome-merge cypress/reports/*.json > cypress/reports/report.json && marge --reportDir cypress/reports cypress/reports/report.json",
@@ -53,6 +54,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.9.1",
     "@playwright/test": "^1.45.1",
+    "@testing-library/dom": "^10.3.2",
     "@testing-library/jest-dom": "^6.4.6",
     "@testing-library/react": "16.0.0",
     "@testing-library/user-event": "14.5.2",
@@ -73,6 +75,7 @@
     "eslint-plugin-react-refresh": "0.4.8",
     "gh-pages": "^6.1.1",
     "husky": "9.0.11",
+    "jsdom": "^24.1.0",
     "lint-staged": "15.2.7",
     "prettier": "3.3.2",
     "prettier-plugin-organize-imports": "4.0.0",
@@ -85,7 +88,8 @@
     "vite-plugin-environment": "1.1.3",
     "vite-plugin-eslint": "1.8.1",
     "vite-tsconfig-paths": "4.3.2",
-    "vitest": "^2.0.2"
+    "vitest": "^2.0.2",
+    "vitest-canvas-mock": "^0.3.3"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.18.1"

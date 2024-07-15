@@ -1,3 +1,4 @@
+import { LoginCallback } from '@okta/okta-react';
 import { RouteObject } from 'react-router';
 import { App } from './App';
 import { RequiredAuth } from './components/required-auth/RequiredAuth';
@@ -19,6 +20,10 @@ export const routes = [
       {
         path: 'signin',
         element: <SignIn />,
+      },
+      {
+        path: 'signin/callback',
+        element: <LoginCallback />,
       },
       {
         path: 'dashboard',

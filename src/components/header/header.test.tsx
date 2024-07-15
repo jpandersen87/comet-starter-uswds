@@ -2,7 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 
-import { AuthProvider } from 'react-oidc-context';
+import * as oktaReact from '@okta/okta-react';
 import { RecoilRoot } from 'recoil';
 import * as useAuthMock from '../../hooks/use-auth/use-auth';
 import { User } from '../../types/user';
@@ -10,14 +10,17 @@ import { Header } from './header';
 
 describe('Header', () => {
   const headerComponent = (
-    <AuthProvider>
-      <RecoilRoot>
-        <BrowserRouter>
-          <Header />
-        </BrowserRouter>
-      </RecoilRoot>
-    </AuthProvider>
+    <RecoilRoot>
+      <BrowserRouter>
+        <Header />
+      </BrowserRouter>
+    </RecoilRoot>
   );
+
+  vi.spyOn(oktaReact, 'useOktaAuth').mockReturnValue({
+    oktaAuth: {} as never,
+    authState: null,
+  });
 
   test('should render successfully', async () => {
     const { baseElement } = render(headerComponent);

@@ -13,7 +13,6 @@ const useAuth = () => {
   const [currentUserData, setCurrentUserData] = useRecoilState<
     User | undefined
   >(currentUser);
-
   /* TODO: Uncomment for interacting with own API, no need to send tokens to external public API */
   // useEffect(() => {
   //   if (auth.user) {
@@ -39,7 +38,7 @@ const useAuth = () => {
       setCurrentUserData({
         firstName: profile.given_name,
         lastName: profile.family_name,
-        displayName: profile.name,
+        displayName: profile.preferred_username,
         emailAddress: profile.email,
         //phoneNumber: profile.phone_number,
       });

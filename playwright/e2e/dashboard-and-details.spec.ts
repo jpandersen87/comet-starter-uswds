@@ -1,10 +1,10 @@
 //import { launchData } from '../fixtures/data';
-import { devices, expect, test } from '../test';
+import { expect, paths, test } from '../test';
 
 test.describe('dashboard spec', () => {
-  test.beforeEach(() => {
-    // Test Setup
-    test.use({ ...devices['macbook-16'] });
+  // Test Setup
+  test.use({
+    storageState: paths.oktaStorageState,
   });
 
   test('verifies access to dashboard after signing in', async ({
@@ -13,17 +13,15 @@ test.describe('dashboard spec', () => {
     makeAxeBuilder,
   }) => {
     // Navigate to Homepage
-    page.goto(baseURL);
+    await page.goto(baseURL);
 
     // Setup Accessibility Testing
     const accessibilityScan = makeAxeBuilder();
 
     // Verify Homepage
-    expect(page.getByRole('heading', { name: 'Welcome Guest' })).toBeVisible();
-
-    // Sign In
-    page.getByRole('link', { name: 'Sign In' }).click();
-    //cy.signIn('test', '12345678');
+    await expect(
+      page.getByRole('heading', { name: 'Welcome John Doe' }),
+    ).toBeVisible();
 
     // Mock launch data
     /*cy.intercept('GET', '/api/*', {
@@ -35,7 +33,9 @@ test.describe('dashboard spec', () => {
 
     // Navigate to Dashboard
     page.getByRole('link', { name: 'Dashboard' }).click();
-    expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Dashboard' }),
+    ).toBeVisible();
 
     // Verify no accessibility violations
     let accessibilityScanResults = await accessibilityScan.analyze();
@@ -48,8 +48,8 @@ test.describe('dashboard spec', () => {
     });*/
 
     // Click on table item and verify details
-    page.getByRole('table').getByRole('link').first().click();
-    expect(page.getByRole('heading', { name: 'Details' })).toBeVisible();
+    await page.getByRole('table').getByRole('link').first().click();
+    await expect(page.getByRole('heading', { name: 'Details' })).toBeVisible();
 
     // Verify no accessibility violations
     accessibilityScanResults = await accessibilityScan.analyze();

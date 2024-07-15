@@ -1,11 +1,28 @@
 import AxeBuilder from '@axe-core/playwright';
-import { devices as baseDevices, test as baseTest } from '@playwright/test';
+import { test as baseTest } from '@playwright/test';
+import { join } from 'node:path';
 
 type TestFixtures = {
   makeAxeBuilder: () => AxeBuilder;
+  mockSigninDisplay: () => Promise<void>;
+  paths: typeof paths;
+  baseURL: string;
 };
 
 export * from '@playwright/test';
+
+export const paths = {
+  oktaIntrospect: join(import.meta.dirname, './fixtures/okta-introspect.json'),
+  oktaOpenidConfiguration: join(
+    import.meta.dirname,
+    './fixtures/okta-openid-configuration.json',
+  ),
+  oktaStorageState: join(
+    import.meta.dirname,
+    './fixtures/okta-storageState.json',
+  ),
+  oktaInteract: join(import.meta.dirname, './fixtures/okta-interact.json'),
+};
 
 export const test = baseTest.extend<TestFixtures>({
   makeAxeBuilder: async ({ page }, use) => {
@@ -16,14 +33,37 @@ export const test = baseTest.extend<TestFixtures>({
 
     await use(makeAxeBuilder);
   },
+  mockSigninDisplay: async (
+    { page, paths: { oktaIntrospect, oktaOpenidConfiguration, oktaInteract } },
+    use,
+  ) => {
+    const fn = async () => {
+      await page.route(
+        /https?:\/\/.+\/oauth2\/default\/\.well-known\/openid-configuration/,
+        (route) => {
+          route.fulfill({
+            path: oktaOpenidConfiguration,
+          });
+        },
+      );
+
+      await page.route(
+        /https?:\/\/.+\/oauth2\/default\/v1\/interact/,
+        (route) => {
+          route.fulfill({
+            path: oktaInteract,
+          });
+        },
+      );
+
+      await page.route(/https?:\/\/.+\/idp\/idx\/introspect/, (route) => {
+        route.fulfill({
+          path: oktaIntrospect,
+        });
+      });
+    };
+
+    await use(fn);
+  },
+  paths,
 });
-export const devices = {
-  ...baseDevices,
-  'macbook-16': {
-    ...baseDevices['Desktop Safari'],
-    viewport: {
-      width: 1536,
-      height: 960,
-    },
-  } satisfies (typeof baseDevices)['Desktop Safari'],
-};

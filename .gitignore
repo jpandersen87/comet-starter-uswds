@@ -56,3 +56,12 @@ cypress/reports
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

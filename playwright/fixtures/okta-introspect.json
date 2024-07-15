@@ -1,0 +1,102 @@
+{
+  "version": "1.0.0",
+  "stateHandle": "handle1234",
+  "expiresAt": "2024-07-15T20:07:53.000Z",
+  "intent": "LOGIN",
+  "remediation": {
+    "type": "array",
+    "value": [
+      {
+        "rel": ["create-form"],
+        "name": "identify",
+        "href": "http://localhost:8080/idp/idx/identify",
+        "method": "POST",
+        "produces": "application/ion+json; okta-version=1.0.0",
+        "value": [
+          {
+            "name": "identifier",
+            "label": "Username",
+            "required": true
+          },
+          {
+            "name": "rememberMe",
+            "type": "boolean",
+            "label": "Remember this device"
+          },
+          {
+            "name": "stateHandle",
+            "required": true,
+            "value": "handle1234",
+            "visible": false,
+            "mutable": false
+          }
+        ],
+        "accepts": "application/json; okta-version=1.0.0"
+      },
+      {
+        "rel": ["create-form"],
+        "name": "unlock-account",
+        "href": "http://localhost:8080/idp/idx/unlock-account",
+        "method": "POST",
+        "produces": "application/ion+json; okta-version=1.0.0",
+        "value": [
+          {
+            "name": "stateHandle",
+            "required": true,
+            "value": "state1234",
+            "visible": false,
+            "mutable": false
+          }
+        ],
+        "accepts": "application/json; okta-version=1.0.0"
+      }
+    ]
+  },
+  "cancel": {
+    "rel": ["create-form"],
+    "name": "cancel",
+    "href": "http://localhost:8080/idp/idx/cancel",
+    "method": "POST",
+    "produces": "application/ion+json; okta-version=1.0.0",
+    "value": [
+      {
+        "name": "stateHandle",
+        "required": true,
+        "value": "handle1234",
+        "visible": false,
+        "mutable": false
+      }
+    ],
+    "accepts": "application/json; okta-version=1.0.0"
+  },
+  "app": {
+    "type": "object",
+    "value": {
+      "name": "oidc_client",
+      "label": "My SPA",
+      "id": "appid1234"
+    }
+  },
+  "authentication": {
+    "type": "object",
+    "value": {
+      "protocol": "OAUTH2.0",
+      "issuer": {
+        "id": "iss1234",
+        "name": "default",
+        "uri": "http://localhost:8080/oauth2/default"
+      },
+      "request": {
+        "max_age": -1,
+        "scope": "openid email",
+        "response_type": "code",
+        "redirect_uri": "https://localhost:8080/signin/callback",
+        "state": "state1234",
+        "code_challenge_method": "S256",
+        "nonce": "nonce1234",
+        "code_challenge": "code1234",
+        "response_mode": "query"
+      }
+    }
+  }
+}

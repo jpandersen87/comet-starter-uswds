@@ -1,9 +1,9 @@
+import * as oktaReact from '@okta/okta-react';
 import { mockData } from '@src/data/spacecraft';
 import axios from '@src/utils/axios';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, waitFor } from '@testing-library/react';
 import MockAdapter from 'axios-mock-adapter';
-import { AuthProvider } from 'react-oidc-context';
 import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
 import * as useAuthMock from '../../hooks/use-auth/use-auth';
@@ -29,16 +29,18 @@ describe('Details', () => {
     },
   });
   const componentWrapper = (
-    <AuthProvider>
-      <RecoilRoot>
-        <BrowserRouter>
-          <QueryClientProvider client={queryClient}>
-            <Details />
-          </QueryClientProvider>
-        </BrowserRouter>
-      </RecoilRoot>
-    </AuthProvider>
+    <RecoilRoot>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <Details />
+        </QueryClientProvider>
+      </BrowserRouter>
+    </RecoilRoot>
   );
+  vi.spyOn(oktaReact, 'useOktaAuth').mockReturnValue({
+    oktaAuth: {} as never,
+    authState: null,
+  });
 
   const mock = new MockAdapter(axios);
   beforeAll(() => {
