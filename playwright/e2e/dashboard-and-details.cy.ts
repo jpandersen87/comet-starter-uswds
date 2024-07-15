@@ -22,7 +22,7 @@ test.describe('dashboard spec', () => {
     expect(page.getByRole('heading', { name: 'Welcome Guest' })).toBeVisible();
 
     // Sign In
-    //page.getByRole("link", {name: "Sign in"}).click();
+    page.getByRole('link', { name: 'Sign In' }).click();
     //cy.signIn('test', '12345678');
 
     // Mock launch data
@@ -31,27 +31,28 @@ test.describe('dashboard spec', () => {
       body: {
         results: launchData,
       },
-    });
+    });*/
 
     // Navigate to Dashboard
-    cy.get('#dashboard-link').click();
-    cy.get('h1').should('contain', 'Dashboard');
+    page.getByRole('link', { name: 'Dashboard' }).click();
+    expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
 
     // Verify no accessibility violations
-    cy.checkA11y();
+    let accessibilityScanResults = await accessibilityScan.analyze();
+    expect(accessibilityScanResults.violations).toEqual([]);
 
     // Mock launch data
-    cy.intercept('GET', '/api/*', {
+    /*cy.intercept('GET', '/api/*', {
       statusCode: 200,
       body: launchData[0],
-    });
+    });*/
 
     // Click on table item and verify details
-    cy.get('[id*="details-link-"]:first').click();
-    cy.get('h1').should('contain', 'Details');*/
+    page.getByRole('table').getByRole('link').first().click();
+    expect(page.getByRole('heading', { name: 'Details' })).toBeVisible();
 
     // Verify no accessibility violations
-    const accessibilityScanResults = await accessibilityScan.analyze();
+    accessibilityScanResults = await accessibilityScan.analyze();
     expect(accessibilityScanResults.violations).toEqual([]);
   });
 });

@@ -1,19 +1,18 @@
 import { Spinner } from '@metrostar/comet-extras';
 import { Card, CardBody } from '@metrostar/comet-uswds';
-import { useOktaAuth } from '@okta/okta-react';
 import { mockData } from '@src/data/spacecraft';
 import { Spacecraft } from '@src/types/spacecraft';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import ErrorNotification from '../../components/error-notification/error-notification';
+import useAuth from '../../hooks/use-auth/use-auth';
 import { DashboardBarChart } from './dashboard-bar-chart/dashboard-bar-chart';
 import { DashboardPieChart } from './dashboard-pie-chart/dashboard-pie-chart';
 import { DashboardTable } from './dashboard-table/dashboard-table';
 // import axios from '@src/utils/axios';
 
 export const Dashboard = (): React.ReactElement => {
-  const { authState } = useOktaAuth();
-  const isSignedIn = !!authState?.idToken;
+  const { isSignedIn } = useAuth();
   const {
     isLoading,
     error,

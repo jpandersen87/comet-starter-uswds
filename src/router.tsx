@@ -1,6 +1,6 @@
 import { RouteObject } from 'react-router';
 import { App } from './App';
-import { ProtectedRoute } from './components/protected-route/protected-route';
+import { RequiredAuth } from './components/required-auth/RequiredAuth';
 import { Dashboard } from './pages/dashboard/dashboard';
 import Details from './pages/details/details';
 import { Home } from './pages/home/home';
@@ -22,7 +22,7 @@ export const routes = [
       },
       {
         path: 'dashboard',
-        element: <ProtectedRoute />,
+        element: <RequiredAuth />,
         children: [
           {
             path: '',
@@ -33,7 +33,7 @@ export const routes = [
       },
       {
         path: 'details',
-        element: <ProtectedRoute />,
+        element: <RequiredAuth />,
         children: [
           {
             path: ':id',

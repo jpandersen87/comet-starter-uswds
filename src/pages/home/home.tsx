@@ -1,7 +1,7 @@
 import { Alert } from '@metrostar/comet-uswds';
 import { getDisplayName } from '@src/utils/auth';
 import React from 'react';
-import useAuth from '../../hooks/use-auth';
+import useAuth from '../../hooks/use-auth/use-auth';
 
 export const Home = (): React.ReactElement => {
   const { isSignedIn, currentUserData } = useAuth();

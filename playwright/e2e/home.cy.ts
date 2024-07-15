@@ -15,7 +15,7 @@ test.describe('home spec', () => {
 
     // Verify Homepage
     expect(page.getByRole('heading', { name: 'Welcome Guest' })).toBeVisible();
-    //cy.get('#sign-in-alert').should('exist');
+    expect(page.getByText('You are not currently signed in')).toBeVisible();
 
     // Verify no accessibility violations
     const accessibilityScanResults = await accessibilityScan.analyze();

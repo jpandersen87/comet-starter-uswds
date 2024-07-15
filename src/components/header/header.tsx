@@ -3,7 +3,7 @@ import { APP_TITLE } from '@src/utils/constants';
 import navigation from '@uswds/uswds/js/usa-header';
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import useAuth from '../../hooks/use-auth';
+import useAuth from '../../hooks/use-auth/use-auth';
 
 export const Header = (): React.ReactElement => {
   const [showMenu, setShowMenu] = useState(false);
@@ -73,7 +73,7 @@ export const Header = (): React.ReactElement => {
             </button>
           </div>
           <nav className="usa-nav">
-            <button type="button" className="usa-nav__close">
+            <button type="button" className="usa-nav__close" title="close">
               <Icon id="menu-icon" type="close" />
             </button>
             <ul className="usa-nav__primary usa-accordion">

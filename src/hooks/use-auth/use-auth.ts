@@ -2,9 +2,8 @@ import { useOktaAuth } from '@okta/okta-react';
 import { getSignInRedirectUrl } from '@src/utils/auth';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { userData } from '../data/user';
-import { currentUser, signedIn } from '../store';
-import { User } from '../types/user';
+import { currentUser, signedIn } from '../../store';
+import { User } from '../../types/user';
 
 const useAuth = () => {
   const { authState, oktaAuth } = useOktaAuth();
@@ -25,10 +24,10 @@ const useAuth = () => {
   // }, [auth.user]);
 
   useEffect(() => {
-    if (authState?.idToken) {
+    if (authState?.isAuthenticated) {
       setIsSignedIn(true);
     }
-  }, [authState?.idToken, setIsSignedIn]);
+  }, [authState?.isAuthenticated, setIsSignedIn]);
 
   useEffect(() => {
     setIsLoading(!authState);
@@ -54,19 +53,14 @@ const useAuth = () => {
     }
   }, [authState?.error, setIsSignedIn]);
 
-  const signIn = (isSso: boolean): void => {
-    if (isSso) {
-      oktaAuth.signInWithRedirect({ redirectUri: getSignInRedirectUrl() });
-    } else {
-      setIsSignedIn(true);
-      setCurrentUserData(userData);
-    }
+  const signIn = (): void => {
+    oktaAuth.signInWithRedirect({ redirectUri: getSignInRedirectUrl() });
   };
 
   const signOut = (): void => {
     setIsSignedIn(false);
     setCurrentUserData({} as User);
-    if (authState?.idToken) {
+    if (authState?.isAuthenticated) {
       oktaAuth.signOut({ postLogoutRedirectUri: getSignInRedirectUrl() });
     } else {
       setIsSignedIn(false);

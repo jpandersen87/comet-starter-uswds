@@ -21,7 +21,7 @@ test.describe('signin spec', () => {
     expect(page.getByRole('heading', { name: 'Welcome Guest' })).toBeVisible();
 
     // Navigate to Sign-in page
-    //cy.get('#auth-link').click();
+    page.getByRole('link', { name: 'Sign In' }).click();
 
     // Verify no accessibility violations
     const accessibilityScanResults = await accessibilityScan.analyze();
@@ -32,6 +32,6 @@ test.describe('signin spec', () => {
 
     // Verify Homepage after signin
     expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
-    //cy.get('#sign-in-alert').should('not.exist');
+    expect(page.getByText('You are not currently signed in')).not.toBeVisible();
   });
 });
