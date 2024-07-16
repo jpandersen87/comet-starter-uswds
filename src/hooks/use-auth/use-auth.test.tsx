@@ -1,4 +1,6 @@
+import { useOktaAuth } from '@okta/okta-react';
 import { act, renderHook } from '@testing-library/react';
+import { useMemo, useState } from 'react';
 import { RecoilRoot } from 'recoil';
 import useAuth from './use-auth'; // Import your useAuth function
 
@@ -7,11 +9,46 @@ interface ContextWrapperProps {
 }
 
 vi.mock('@okta/okta-react', () => ({
-  useOktaAuth: () => ({
-    oktaAuth: {} as never,
-    authState: {} as never,
-  }),
+  useOktaAuth: vi.fn(),
 }));
+
+const mockUseOktaAuth = vi.mocked(useOktaAuth);
+
+mockUseOktaAuth.mockImplementation(() => {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const state = useMemo(
+    () =>
+      ({
+        oktaAuth: {
+          signInWithRedirect: () => {
+            setIsSignedIn(true);
+          },
+          getUser: vi.fn().mockResolvedValue({
+            given_name: 'John',
+            family_name: 'Doe',
+            name: 'John Doe',
+            preferred_username: 'jdoe@test.com',
+            email: 'jdoe@test.com',
+            phone_number: '1234567890',
+          }),
+        },
+        authState: !isSignedIn
+          ? {}
+          : {
+              isAuthenticated: true,
+              idToken: {
+                claims: {
+                  name: 'John Doe',
+                  preferred_username: 'jdoe@test.com',
+                  email: 'jdoe@test.com',
+                },
+              },
+            },
+      }) as never,
+    [isSignedIn],
+  );
+  return state;
+});
 
 describe('useAuth', () => {
   afterEach(() => {
@@ -47,27 +84,6 @@ describe('useAuth', () => {
   });
 
   it('should set isSignedIn to true when authenticated and with profile', async () => {
-    vi.mock('@okta/okta-react', () => ({
-      useOktaAuth: () => ({
-        oktaAuth: {
-          signInWithRedirect: vi.fn(),
-          signOut: vi.fn(),
-        } as never,
-        authState: {
-          isAuthenticated: true,
-          idToken: {
-            claims: {
-              given_name: 'John',
-              family_name: 'Doe',
-              preferred_username: 'John Doe',
-              email: 'jdoe@test.com',
-              //phoneNumber: '1234567890',
-            },
-          },
-        },
-      }),
-    }));
-
     const { result } = renderHook(() => useAuth(), {
       wrapper: contextWrapper,
     });

@@ -1,4 +1,5 @@
 //import { launchData } from '../fixtures/data';
+import { launchData } from '../fixtures/data';
 import { expect, paths, test } from '../test';
 
 test.describe('dashboard spec', () => {
@@ -11,9 +12,13 @@ test.describe('dashboard spec', () => {
     page,
     baseURL,
     makeAxeBuilder,
+    mockUserinfo,
   }) => {
     // Navigate to Homepage
-    await page.goto(baseURL);
+    await page.goto(baseURL, { waitUntil: 'commit' });
+
+    // eslint-disable-next-line prettier/prettier
+    await mockUserinfo();
 
     // Setup Accessibility Testing
     const accessibilityScan = makeAxeBuilder();
@@ -24,12 +29,13 @@ test.describe('dashboard spec', () => {
     ).toBeVisible();
 
     // Mock launch data
-    /*cy.intercept('GET', '/api/*', {
-      statusCode: 200,
-      body: {
-        results: launchData,
-      },
-    });*/
+    await page.route('/api/*', (route) => {
+      route.fulfill({
+        json: {
+          results: launchData,
+        },
+      });
+    });
 
     // Navigate to Dashboard
     page.getByRole('link', { name: 'Dashboard' }).click();
@@ -42,10 +48,11 @@ test.describe('dashboard spec', () => {
     expect(accessibilityScanResults.violations).toEqual([]);
 
     // Mock launch data
-    /*cy.intercept('GET', '/api/*', {
-      statusCode: 200,
-      body: launchData[0],
-    });*/
+    await page.route('/api/*', (route) => {
+      route.fulfill({
+        json: launchData[0],
+      });
+    });
 
     // Click on table item and verify details
     await page.getByRole('table').getByRole('link').first().click();

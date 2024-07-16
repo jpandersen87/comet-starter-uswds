@@ -1,0 +1,21 @@
+{
+  "sub": "sub12345",
+  "name": "John Doe",
+  "email": "johndoe@unknown.com",
+  "ver": 1,
+  "iss": "http://localhost:8080/oauth2/default",
+  "aud": "{clientId}",
+  "iat": 1721058177,
+  "exp": 4119379672,
+  "jti": "ID.12345",
+  "amr": ["pwd"],
+  "idp": "idp12345",
+  "nonce": "nonce",
+  "preferred_username": "johndoe@unknown.com",
+  "auth_time": 1000,
+  "given_name": "John",
+  "family_name": "Doe",
+  "zoneinfo": "America/Los_Angeles",
+  "email_verified": true,
+  "phone_number": "1234567890"
+}

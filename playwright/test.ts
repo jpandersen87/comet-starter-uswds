@@ -5,6 +5,7 @@ import { join } from 'node:path';
 type TestFixtures = {
   makeAxeBuilder: () => AxeBuilder;
   mockSigninDisplay: () => Promise<void>;
+  mockUserinfo: () => Promise<void>;
   paths: typeof paths;
   baseURL: string;
 };
@@ -22,6 +23,7 @@ export const paths = {
     './fixtures/okta-storageState.json',
   ),
   oktaInteract: join(import.meta.dirname, './fixtures/okta-interact.json'),
+  oktaUserinfo: join(import.meta.dirname, './fixtures/okta-userinfo.json'),
 };
 
 export const test = baseTest.extend<TestFixtures>({
@@ -61,6 +63,20 @@ export const test = baseTest.extend<TestFixtures>({
           path: oktaIntrospect,
         });
       });
+    };
+
+    await use(fn);
+  },
+  mockUserinfo: async ({ page, paths }, use) => {
+    const fn = async () => {
+      await page.route(
+        /https?:\/\/.+\/oauth2\/default\/v1\/userinfo/,
+        (route) => {
+          route.fulfill({
+            path: paths.oktaUserinfo,
+          });
+        },
+      );
     };
 
     await use(fn);

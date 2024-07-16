@@ -12,7 +12,7 @@ export default {
     clientId: CLIENT_ID,
     issuer: ISSUER,
     redirectUri: REDIRECT_URI,
-    scopes: ['openid', 'profile', 'email'],
+    scopes: ['openid', 'profile', 'email', 'phone'],
     pkce: true,
   } satisfies OktaAuthOptions,
   widget: {
@@ -22,5 +22,3 @@ export default {
     // Additional documentation on config options can be found at https://github.com/okta/okta-signin-widget#basic-config-options
   } satisfies WidgetOptions,
 };
-
-console.log(ISSUER);

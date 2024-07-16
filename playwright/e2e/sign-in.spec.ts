@@ -37,9 +37,16 @@ test.describe('signin spec', () => {
       storageState: paths.oktaStorageState,
     });
 
-    test('navigates to home', async ({ page, baseURL, makeAxeBuilder }) => {
+    test('navigates to home', async ({
+      page,
+      baseURL,
+      makeAxeBuilder,
+      mockUserinfo,
+    }) => {
       // Login
-      await page.goto(baseURL);
+      await page.goto(baseURL, { waitUntil: 'commit' });
+
+      await mockUserinfo();
 
       // Setup Accessibility Testing
       const accessibilityScan = makeAxeBuilder();

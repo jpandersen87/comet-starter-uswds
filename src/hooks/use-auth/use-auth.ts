@@ -3,7 +3,7 @@ import { getSignInRedirectUrl } from '@src/utils/auth';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { currentUser, signedIn } from '../../store';
-import { User } from '../../types/user';
+import { User, type OktaUserClaims } from '../../types/user';
 
 const useAuth = () => {
   const { authState, oktaAuth } = useOktaAuth();
@@ -33,17 +33,26 @@ const useAuth = () => {
   }, [authState, setIsLoading]);
 
   useEffect(() => {
-    const profile = authState?.idToken?.claims;
-    if (profile && !currentUserData) {
-      setCurrentUserData({
-        firstName: profile.given_name,
-        lastName: profile.family_name,
-        displayName: profile.preferred_username,
-        emailAddress: profile.email,
-        //phoneNumber: profile.phone_number,
-      });
+    if (!authState || !authState.isAuthenticated) {
+      // When user isn't authenticated, forget any user info
+      setCurrentUserData(undefined);
+    } else {
+      oktaAuth
+        .getUser()
+        .then((info: OktaUserClaims) => {
+          setCurrentUserData({
+            displayName: info.name,
+            emailAddress: info.email,
+            firstName: info.given_name,
+            lastName: info.family_name,
+            phoneNumber: info.phone_number,
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
-  }, [authState?.idToken?.claims, currentUserData, setCurrentUserData]);
+  }, [authState, oktaAuth, setCurrentUserData]);
 
   useEffect(() => {
     if (authState?.error) {
